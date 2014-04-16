@@ -8,10 +8,11 @@ import (
 func FillBlock(count int) []byte {
 	// buf is out result buffer
 	var buf []byte
-
+	// allocate the tuple buffer only once
+	tuple := make([]byte, 8+8+50)
 	// append 'count' number of tuples to the buffer
 	for i := 0; i < count; i++ {
-		buf = append(buf, tupleBytes(i)...)
+		buf = append(buf, tupleBytes(i, tuple)...)
 	}
 
 	return buf
@@ -21,10 +22,9 @@ func FillBlock(count int) []byte {
 // CaptureTime uint64 (8 bytes)
 // PutTime     uint64 (8 bytes)
 // Encoded     []byte (50 bytes)
-func tupleBytes(i int) []byte {
+func tupleBytes(i int, tuple []byte) []byte {
 	captureTime := uint64(i)
 	putTime := uint64(i)
-	tuple := make([]byte, 8+8, 8+8+50)
 	PutLittleEndianUint64(tuple, 0, captureTime)
 	PutLittleEndianUint64(tuple, 8, putTime)
 	encoded := bytes.Repeat([]byte{1}, 50)

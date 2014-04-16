@@ -24,7 +24,7 @@ func FillBlock(count int) []byte {
 func tupleBytes(i int) []byte {
 	captureTime := uint64(i)
 	putTime := uint64(i)
-	tuple := make([]byte, 8+8)
+	tuple := make([]byte, 8+8, 8+8+50)
 	PutLittleEndianUint64(tuple, 0, captureTime)
 	PutLittleEndianUint64(tuple, 8, putTime)
 	encoded := bytes.Repeat([]byte{1}, 50)
